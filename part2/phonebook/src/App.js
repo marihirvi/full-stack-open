@@ -112,7 +112,7 @@ const App = () => {
 
     return (
         <div>
-            <h1>Phonebook</h1>
+            <h1>The Phonebook</h1>
             <Notification message={message} type="success" />
             <Notification message={errorMessage} type="error" />
             <h2>Search by name</h2>
