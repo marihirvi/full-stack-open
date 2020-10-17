@@ -48,19 +48,25 @@ const App = () => {
                         setPersons(persons.map(p => p.name !== newName ? p : { ...p, number: newNumber }))
                         setMessage(
                             `The number of ${newPerson.name} was successfully updated.`
-                          )
-                          setTimeout(() => {
+                        )
+                        setTimeout(() => {
                             setMessage(null)
-                          }, 5000)
+                        }, 5000)
                     })
                     .catch(error => {
-                        setErrorMessage(
-                            `${newName} has already been removed from phonebook`
-                          )
-                          setTimeout(() => {
-                            setErrorMessage(null)
-                          }, 5000)
-                          setPersons(persons.filter(p => p.name !== newName))
+                        if (error.response !== undefined) {
+                            setErrorMessage(error.response.data.error)
+                            setTimeout(() => {
+                                setErrorMessage(null)
+                            }, 5000)
+                        } else {
+                            setErrorMessage(
+                                `${newName} has already been removed from phonebook`)
+                            setTimeout(() => {
+                                setErrorMessage(null)
+                            }, 5000)
+                            setPersons(persons.filter(p => p.name !== newName))
+                        }
                     })
             }
         } else {
@@ -70,10 +76,16 @@ const App = () => {
                     setPersons(persons.concat(newPerson))
                     setMessage(
                         `${newPerson.name} was successfully added to phonebook`
-                      )
-                      setTimeout(() => {
+                    )
+                    setTimeout(() => {
                         setMessage(null)
-                      }, 5000)
+                    }, 5000)
+                })
+                .catch(error => {
+                    setErrorMessage(error.response.data.error)
+                    setTimeout(() => {
+                        setMessage(null)
+                    }, 5000)
                 })
         }
         setNewName('')
@@ -89,19 +101,19 @@ const App = () => {
                     setPersons(persons.filter(p => p.id !== id))
                     setMessage(
                         `${name} was successfully removed from phonebook`
-                      )
-                      setTimeout(() => {
+                    )
+                    setTimeout(() => {
                         setMessage(null)
-                      }, 5000)
+                    }, 5000)
                 })
                 .catch(error => {
                     setErrorMessage(
                         `${name} has already been removed from phonebook`
-                      )
-                      setTimeout(() => {
+                    )
+                    setTimeout(() => {
                         setErrorMessage(null)
-                      }, 5000)
-                      setPersons(persons.filter(p => p.id !== id))
+                    }, 5000)
+                    setPersons(persons.filter(p => p.id !== id))
                 })
         }
     }
